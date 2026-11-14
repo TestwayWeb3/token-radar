@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols by implied launch value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">◉</div>
+    <div>
+      <h1>Token Radar</h1>
+      <p class="sub">Which pre-token protocol is worth farming next — ranked by what its launch would be worth.</p>
+    </div>
+  </div>
+  <div class="meta" id="meta">Snapshot loading…</div>
+</header>
+
+<section class="stats" id="stats"></section>
+
+<section class="method">
+  <strong>How the value is built.</strong>
+  <span id="methodText"></span>
+  A protocol records no token when its record carries no token id or symbol — that is the record, not proof it has none.
+  Rows marked <span class="pill launched">Launched</span> already record a token and sit at the bottom for comparison only.
+</section>
+
+<section class="controls">
+  <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search protocols">
+  <select id="status" aria-label="Status filter">
+    <option value="all">All statuses</option>
+    <option value="pretoken">Pre-token only</option>
+    <option value="launched">Launched only</option>
+  </select>
+  <select id="cat" aria-label="Category filter"><option value="all">All categories</option></select>
+  <select id="sort" aria-label="Sort board">
+    <option value="rank">Sort: rank</option>
+    <option value="value">Sort: implied value</option>
+    <option value="tvl">Sort: TVL</option>
+    <option value="chg">Sort: 7-day change</option>
+    <option value="days">Sort: days tracked</option>
+  </select>
+  <span class="count" id="count"></span>
+</section>
+
+<main class="grid">
+  <section class="boardWrap">
+    <table class="board">
+      <thead>
+        <tr>
+          <th class="num">#</th>
+          <th>Protocol</th>
+          <th>Category</th>
+          <th>Chains</th>
+          <th class="num">TVL</th>
+          <th class="num">7d</th>
+          <th class="num">Implied value</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No protocol matches this filter.</p>
+  </section>
+  <aside class="detail" id="detail" aria-live="polite"></aside>
+</main>
+
+<footer class="foot">
+  <p>Implied values are this radar's own claim, built from the snapshot's own figures — TVL, seven-day change and days tracked with no token recorded. They are not a prediction that a token will launch, or when.</p>
+  <p>Farm plans are starting points: check the protocol's own pages before moving funds, and never farm with money you cannot afford to lock.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

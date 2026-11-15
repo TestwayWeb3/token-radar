@@ -11,9 +11,25 @@ function argValue(flag: string): string | null {
 }
 
 function parseArgs(): { input: string; output: string } {
-  const input = argValue("--input") || process.env.MAKEFUN_INPUT || (existsSync("/input/snapshot.json") ? "/input/snapshot.json" : KIT_SNAPSHOT);
-  const output = process.env.MAKEFUN_OUTPUT_DIR || argValue("--out") || "out";
-  return { input, output };
+  // Match the kit starter's contract: --input may be a file or a directory
+  // (the grader mounts the snapshot at /input), --output is the flag the
+  // starter honours, MAKEFUN_INPUT_DIR / MAKEFUN_OUTPUT_DIR are the env
+  // names the grader's sandbox driver sets from its mounts, and /output is
+  // the default when neither flag nor env is given (never a relative "out",
+  // which would land in the read-only /bot on the grader).
+  const rawInput =
+    argValue("--input") ||
+    process.env.MAKEFUN_INPUT ||
+    process.env.MAKEFUN_INPUT_DIR ||
+    "/input";
+  const input =
+    rawInput.endsWith(".json") || !existsSync(rawInput) || statSync(rawInput).isFile()
+      ? rawInput
+      : join(rawInput, "snapshot.json");
+  const resolvedInput = existsSync(input) ? input : KIT_SNAPSHOT;
+  const output =
+    process.env.MAKEFUN_OUTPUT_DIR || argValue("--output") || argValue("--out") || "/output";
+  return { input: resolvedInput, output };
 }
 
 type Protocol = {
